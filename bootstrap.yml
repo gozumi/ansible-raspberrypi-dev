@@ -2,8 +2,14 @@
   become: yes
 
   tasks:
-    - name: "Install packages"
+    - name: Update packages
       ansible.builtin.apt:
         update_cache: "yes"
         upgrade: "yes"
         state: latest
+
+    - name: Install packages
+      ansible.builtin.apt:
+        name:
+          - bat
+          - zsh
