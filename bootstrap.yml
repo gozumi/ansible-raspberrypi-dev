@@ -1,0 +1,9 @@
+- hosts: localhost
+  become: yes
+
+  tasks:
+    - name: "Install packages"
+      ansible.builtin.apt:
+        update_cache: "yes"
+        upgrade: "yes"
+        state: latest
