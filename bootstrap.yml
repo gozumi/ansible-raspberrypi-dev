@@ -2,6 +2,9 @@
   become: yes
 
   tasks:
+    - set_fact:
+        home_dir: "{{ lookup('env', 'HOME') }}"
+
     - name: Update packages
       ansible.builtin.apt:
         update_cache: "yes"
@@ -13,3 +16,9 @@
         name:
           - bat
           - zsh
+
+    - name: git clone dot files
+      ansible.builtin.git:
+        repo: https://github.com/gozumi/dotfiles.git
+        dest: "{{home_dir}}/git-download/dotfiles"
+        version: main
