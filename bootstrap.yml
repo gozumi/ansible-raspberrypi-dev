@@ -4,6 +4,7 @@
   tasks:
     - set_fact:
         home_dir: "{{ lookup('env', 'HOME') }}"
+        user: "{{ lookup('env', 'USER') }}"
 
     - name: Update packages
       ansible.builtin.apt:
@@ -18,7 +19,15 @@
           - zsh
 
     - name: git clone dot files
+      become_user: "{{user}}"
       ansible.builtin.git:
         repo: https://github.com/gozumi/dotfiles.git
         dest: "{{home_dir}}/git-download/dotfiles"
         version: main
+
+    - name: git clone zsh autocomplete
+      become_user: "{{user}}"
+      ansible.builtin.git:
+        repo: https://github.com/marlonrichert/zsh-autocomplete.git
+        dest: "{{home_dir}}/git-download/zsh-autocomplete"
+        version: 23.07.13
