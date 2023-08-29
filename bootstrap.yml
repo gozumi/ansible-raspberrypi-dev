@@ -22,12 +22,28 @@
       become_user: "{{user}}"
       ansible.builtin.git:
         repo: https://github.com/gozumi/dotfiles.git
-        dest: "{{home_dir}}/git-download/dotfiles"
+        dest: "{{home_dir}}/git-downloads/dotfiles"
         version: main
 
     - name: git clone zsh autocomplete
       become_user: "{{user}}"
       ansible.builtin.git:
         repo: https://github.com/marlonrichert/zsh-autocomplete.git
-        dest: "{{home_dir}}/git-download/zsh-autocomplete"
+        dest: "{{home_dir}}/git-downloads/zsh-autocomplete"
         version: 23.07.13
+
+    - name: Create a symbolic link to the .zshrc file
+      ansible.builtin.file:
+        src: "{{home_dir}}/git-downloads/dotfiles/.zshrc"
+        dest: "{{home_dir}}/.zshrc"
+        owner: "{{user}}"
+        group: "{{user}}"
+        state: link
+
+    - name: Create a symbolic link to the git-prompt.sh file
+      ansible.builtin.file:
+        src: "{{home_dir}}/git-downloads/dotfiles/git-prompt.sh"
+        dest: "{{home_dir}}/git-prompt.sh"
+        owner: "{{user}}"
+        group: "{{user}}"
+        state: link
