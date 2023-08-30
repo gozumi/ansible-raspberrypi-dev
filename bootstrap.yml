@@ -1,5 +1,4 @@
 - hosts: localhost
-  become: yes
 
   tasks:
     - set_fact:
@@ -7,26 +6,26 @@
         user: "{{ lookup('env', 'USER') }}"
 
     - name: Update packages
+      become: yes
       ansible.builtin.apt:
         update_cache: "yes"
         upgrade: "yes"
         state: latest
 
     - name: Install packages
+      become: yes
       ansible.builtin.apt:
         name:
           - bat
           - zsh
 
     - name: git clone dot files
-      become_user: "{{user}}"
       ansible.builtin.git:
         repo: https://github.com/gozumi/dotfiles.git
         dest: "{{home_dir}}/git-downloads/dotfiles"
         version: main
 
     - name: git clone zsh autocomplete
-      become_user: "{{user}}"
       ansible.builtin.git:
         repo: https://github.com/marlonrichert/zsh-autocomplete.git
         dest: "{{home_dir}}/git-downloads/zsh-autocomplete"
@@ -36,14 +35,10 @@
       ansible.builtin.file:
         src: "{{home_dir}}/git-downloads/dotfiles/.zshrc"
         dest: "{{home_dir}}/.zshrc"
-        owner: "{{user}}"
-        group: "{{user}}"
         state: link
 
     - name: Create a symbolic link to the git-prompt.sh file
       ansible.builtin.file:
         src: "{{home_dir}}/git-downloads/dotfiles/git-prompt.sh"
         dest: "{{home_dir}}/git-prompt.sh"
-        owner: "{{user}}"
-        group: "{{user}}"
         state: link
