@@ -46,3 +46,14 @@
     - name: Make zsh the default shell
       user: "name={{user}} shell=/usr/bin/zsh"
       become: yes
+
+    - name: Download the raspberry pi pico setup script
+      ansible.builtin.get_url:
+        url: https://raw.githubusercontent.com/raspberrypi/pico-setup/master/pico_setup.sh
+        dest: "{{home_dir}}/git-downloads/pico_setup.sh"
+        mode: '0550'
+        force: true
+
+    - name: Install rust
+      ansible.builtin.shell: curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+      
